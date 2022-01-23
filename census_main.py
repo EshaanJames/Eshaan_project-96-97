@@ -6,7 +6,7 @@ import census_plot
 @st.cache()
 def load_data():
 
-	df = pd.read_csv('E:/Python codes/Project 97/Adult.csv', header=None)
+	df = pd.read_csv('Adult.csv', header=None)
 	df.head()
 	column_name =['age', 'workclass', 'fnlwgt', 'education', 'education-years', 'marital-status', 'occupation', 'relationship', 'race','gender','capital-gain', 'capital-loss', 'hours-per-week', 'native-country', 'income']
 
