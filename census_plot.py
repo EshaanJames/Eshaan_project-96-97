@@ -1,5 +1,6 @@
 import streamlit as st
 import matplotlib.pyplot as plt
+import seaborn as sns
 st.set_option('deprecation.showPyplotGlobalUse', False)
 def app(census_df):
     st.header('Columns Description. .')
@@ -15,7 +16,7 @@ def app(census_df):
     if col_sum.checkbox('Show summary'):
         st.table(census_df.describe())
 
-    plot_list = ['Income-group', 'Gender', 'Hours-per-week / Income', 'Hours-per-week / Gender', 'Workclass / Income']
+    plot_list = ['Income-group', 'Gender', 'Workclass / Income', 'boxplot']
     plot = st.multiselect('Select Plots to show', plot_list)
     if 'Income-group' in plot:
         st.write('Income-group')
@@ -29,19 +30,16 @@ def app(census_df):
         ax.pie(census_df['gender'].value_counts(), labels=['Male', 'Female'])
         ax.legend()
         st.pyplot(fig)
-    if 'Hours-per-week / Income' in plot:
-        st.write('Hours-per-week / Income')
-        fig, ax = plt.subplots()
-        ax.bar(census_df['income'], census_df['hours-per-week'])
-        st.pyplot(fig)
-    if 'Hours-per-week / Gender' in plot:
-        st.write('Hours-per-week / Gender')
-        fig, ax = plt.subplots()
-        ax.scatter(census_df['gender'], census_df['hours-per-week'])
-        st.pyplot(fig)
+
     if 'Workclass / Income' in plot:
         st.write('Workclass / Income')
         st.write('Hours-per-week / Gender')
         fig, ax = plt.subplots()
-        ax.scatter( census_df['workclass'],census_df['gender'])
+        sns.countplot( x=census_df['workclass'],hue=census_df['income'])
         st.pyplot(fig)
+    if 'boxplot' in plot:
+        hue_cols = st.multiselect('Select the column', ('income', 'gender'))
+        for i in hue_cols:
+            fig, ax = plt.subplots()
+            sns.boxplot(x=census_df['hours-per-week'], y = census_df[i])
+            st.pyplot(fig)
